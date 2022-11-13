@@ -11,7 +11,7 @@
         v-model="password"
       />
       <p v-if="errorMessage">{{ translateError(errorMessage) }}</p>
-      <Button title="Sign Up" />
+      <Button title="Signup" />
     </form>
   </main>
 </template>
