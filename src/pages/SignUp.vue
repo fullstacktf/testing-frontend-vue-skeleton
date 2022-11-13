@@ -4,32 +4,40 @@
       <Title>Sign up with email</Title>
       <p>Enter your email address to create an account.</p>
 
-      <EmailField id="email" label-text="Your email" v-model="name" />
+      <EmailField id="email" label-text="Your email" v-model="email" />
       <PasswordField
         id="password"
         label-text="Your password"
         v-model="password"
       />
+      <p v-if="errorMessage">{{ translateError(errorMessage) }}</p>
       <Button title="Sign Up" />
     </form>
   </main>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { inject, ref } from "vue";
 import Title from "../components/Title.vue";
 import EmailField from "../components/EmailField.vue";
 import PasswordField from "../components/PasswordField.vue";
 import Button from "../components/Button.vue";
+import { translateError } from "../utils/translateError.js";
 
-const name = ref("");
+const email = ref("");
 const password = ref("");
-const router = useRouter();
+const errorMessage = ref("");
+const { authService, routerService } = inject("dependencies");
 
 function onSubmit() {
-  console.log(name.value, password.value);
-  router.push("/success");
+  authService
+    .signUp(email.value, password.value)
+    .then(() => {
+      routerService.navigateToSignUpSuccess();
+    })
+    .catch((error) => {
+      errorMessage.value = error.message;
+    });
 }
 </script>
 
