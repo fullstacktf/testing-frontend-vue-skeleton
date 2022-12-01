@@ -17,23 +17,24 @@
 </template>
 
 <script setup>
-import { inject, ref } from "vue";
+import { ref } from "vue";
 import Title from "../components/Title.vue";
 import EmailField from "../components/EmailField.vue";
 import PasswordField from "../components/PasswordField.vue";
 import Button from "../components/Button.vue";
 import { translateError } from "../utils/translateError.js";
 
+const props = defineProps(["authService", "routerService"]);
+
 const email = ref("");
 const password = ref("");
 const errorMessage = ref("");
-const { authService, routerService } = inject("dependencies");
 
 function onSubmit() {
-  authService
+  props.authService
     .signUp(email.value, password.value)
     .then(() => {
-      routerService.navigateToSignUpSuccess();
+      props.routerService.navigateToSignUpSuccess();
     })
     .catch((error) => {
       errorMessage.value = error.message;

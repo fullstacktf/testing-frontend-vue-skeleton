@@ -8,7 +8,15 @@ import Success from "./pages/Success.vue";
 import { createDependenciesReal } from "./factories/CreateDependenciesReal.js";
 
 const routes = [
-  { path: "/", component: SignUp },
+  {
+    path: "/",
+    component: SignUp,
+    props: () => {
+      const { authService, routerService } = createDependenciesReal({ router });
+
+      return { authService, routerService };
+    },
+  },
   { path: "/success", component: Success },
 ];
 
@@ -17,6 +25,4 @@ const router = createRouter({
   routes,
 });
 
-const dependencies = createDependenciesReal({ router });
-
-createApp(App).use(router).provide("dependencies", dependencies).mount("#app");
+createApp(App).use(router).mount("#app");

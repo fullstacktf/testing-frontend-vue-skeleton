@@ -13,15 +13,13 @@ describe("signup", () => {
 
     const user = userEvent.setup();
     render(SignUp, {
-      global: {
-        provide: {
-          dependencies,
-        },
+      props: {
+        authService: dependencies.authService,
+        routerService: dependencies.routerService,
       },
     });
 
-    let byLabelText = screen.getByLabelText("Your email");
-    await user.click(byLabelText);
+    await user.click(screen.getByLabelText("Your email"));
     await user.keyboard("prueba@gmail.com");
 
     await user.click(screen.getByLabelText("Your password"));
