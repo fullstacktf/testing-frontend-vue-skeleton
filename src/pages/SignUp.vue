@@ -18,13 +18,14 @@
 
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import Title from "../components/Title.vue";
 import EmailField from "../components/EmailField.vue";
 import PasswordField from "../components/PasswordField.vue";
 import Button from "../components/Button.vue";
 import { translateError } from "../utils/translateError.js";
 
-const props = defineProps(["routerService"]);
+const router = useRouter();
 
 const email = ref("");
 const password = ref("");
@@ -45,7 +46,7 @@ function onSubmit() {
       }
     })
     .then(() => {
-      props.routerService.navigateToSignUpSuccess();
+      router.push("/success");
     })
     .catch((error) => {
       errorMessage.value = error.message;
