@@ -46,8 +46,7 @@ function onSubmit() {
       }
     })
     .then(() => {
-      const push = document.pushRouter || router.push
-      push("/success")
+      router.push("/success");
     })
     .catch((error) => {
       errorMessage.value = error.message;
