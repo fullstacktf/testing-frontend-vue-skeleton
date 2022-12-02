@@ -24,15 +24,26 @@ import PasswordField from "../components/PasswordField.vue";
 import Button from "../components/Button.vue";
 import { translateError } from "../utils/translateError.js";
 
-const props = defineProps(["authService", "routerService"]);
+const props = defineProps(["routerService"]);
 
 const email = ref("");
 const password = ref("");
 const errorMessage = ref("");
 
 function onSubmit() {
-  props.authService
-    .signUp(email.value, password.value)
+  fetch("https://backend-login-placeholder.deno.dev/api/users", {
+    method: "POST",
+    body: JSON.stringify({ email: email.value, password: password.value }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === "error") {
+        throw new Error(data.code);
+      }
+    })
     .then(() => {
       props.routerService.navigateToSignUpSuccess();
     })
