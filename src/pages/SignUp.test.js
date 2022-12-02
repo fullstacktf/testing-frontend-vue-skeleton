@@ -3,19 +3,21 @@ import SignUp from "./SignUp.vue";
 import { screen } from "@testing-library/dom";
 import { render } from "@testing-library/vue";
 import userEvent from "@testing-library/user-event";
-import { createDependenciesFake } from "../factories/CreateDependenciesFake.js";
+import { AuthServiceFake } from "../services/AuthServiceFake.js";
+import { RouterServiceFake } from "../services/RouterServiceFake.js";
 
 describe("signup", () => {
   it("redirects to the success page when signup is ok", async () => {
-    const dependencies = createDependenciesFake();
+    const authService = new AuthServiceFake();
+    const routerService = new RouterServiceFake();
 
-    vi.spyOn(dependencies.routerService, "navigateToSignUpSuccess");
+    vi.spyOn(routerService, "navigateToSignUpSuccess");
 
     const user = userEvent.setup();
     render(SignUp, {
       props: {
-        authService: dependencies.authService,
-        routerService: dependencies.routerService,
+        authService,
+        routerService,
       },
     });
 
@@ -27,8 +29,6 @@ describe("signup", () => {
 
     await user.click(screen.getByText("Signup"));
 
-    expect(
-      dependencies.routerService.navigateToSignUpSuccess
-    ).toHaveBeenCalled();
+    expect(routerService.navigateToSignUpSuccess).toHaveBeenCalled();
   });
 });

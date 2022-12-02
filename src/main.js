@@ -5,14 +5,16 @@ import "./main.css";
 import App from "./App.vue";
 import SignUp from "./pages/SignUp.vue";
 import Success from "./pages/Success.vue";
-import { createDependenciesReal } from "./factories/CreateDependenciesReal.js";
+import { AuthServiceApi } from "./services/AuthServiceApi.js";
+import { RouterServiceVueRouter } from "./services/RouterServiceVueRouter.js";
 
 const routes = [
   {
     path: "/",
     component: SignUp,
     props: () => {
-      const { authService, routerService } = createDependenciesReal({ router });
+      const authService = new AuthServiceApi();
+      const routerService = new RouterServiceVueRouter(router);
 
       return { authService, routerService };
     },
